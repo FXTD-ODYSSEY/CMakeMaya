@@ -10,8 +10,9 @@ python = "^3.8"
 [tool.poetry.dev-dependencies]
 cmake = "^3.22.4"
 doit = "^0.36.0"
-attrs = "^21.4.0"
 tomlkit = "^0.10.2"
+cookiecutter = "^1.7.3"
+tqdm = "^4.64.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

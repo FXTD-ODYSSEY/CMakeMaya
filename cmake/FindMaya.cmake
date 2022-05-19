@@ -65,20 +65,22 @@ set(MAYA_LOCATION ${MAYA_INSTALL_PATH}/maya${MAYA_VERSION}${MAYA_INSTALL_PATH_SU
 message("[Log] Maya installation location: ${MAYA_LOCATION}")
 
 #Find headers in SDK folder and return a dirrectory
-find_path(	MAYA_INCLUDE_DIR 	maya/MFn.h
-			PATHS 				${MAYA_SDK_LOCATION} 
-			PATH_SUFFIXES 		"${MAYA_INCLUDE_DIR_NAME}/"
-			DOC					"Maya Include Path"
-)
+# find_path(	MAYA_INCLUDE_DIR 	maya/MFn.h
+# 			PATHS 				${MAYA_SDK_LOCATION} 
+# 			PATH_SUFFIXES 		"${MAYA_INCLUDE_DIR_NAME}/"
+# 			DOC					"Maya Include Path"
+# )
+set(MAYA_INCLUDE_DIR  ${MAYA_LOCATION}/${MAYA_INCLUDE_DIR_NAME}/)
 message("[Log] Maya include location:  ${MAYA_INCLUDE_DIR}")
 
 
 #Find libs in maya installation folder and return a dirrectory
-find_path(  MAYA_LIBRARY_DIR    ${OPENMAYA}
-            PATHS               ${MAYA_LOCATION}
-            PATH_SUFFIXES       "${MAYA_LIB_DIR_NAME}/"
-            DOC                 "Maya Library Path"
-)
+# find_path(  MAYA_LIBRARY_DIR    ${OPENMAYA}
+#             PATHS               ${MAYA_LOCATION}
+#             PATH_SUFFIXES       "${MAYA_LIB_DIR_NAME}/"
+#             DOC                 "Maya Library Path"
+# )
+set(MAYA_LIBRARY_DIR  ${MAYA_LOCATION}/${MAYA_LIB_DIR_NAME}/)
 message("[Log] Maya libs location: ${MAYA_LIBRARY_DIR}")
 
 #Find maya individual libs
