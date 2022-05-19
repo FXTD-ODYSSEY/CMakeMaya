@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "cmakemaya"
+version = "0.1.0"
+description = "cmake for Maya C++ dev"
+authors = ["timmyliang <timmyliang@tencent.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+
+[tool.poetry.dev-dependencies]
+cmake = "^3.22.4"
+doit = "^0.36.0"
+attrs = "^21.4.0"
+tomlkit = "^0.10.2"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
