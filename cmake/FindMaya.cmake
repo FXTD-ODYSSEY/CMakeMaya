@@ -21,7 +21,7 @@ set(MAYA_TARGET_TYPE LIBRARY)
 if (WIN32)
 
 	#Maya Windows
-    set(MAYA_INSTALL_PATH "C:/Program Files/Autodesk") #maya install folder
+    set(MAYA_INSTALL_PATH "$ENV{MAYA_INSTALL_LOCATION}") #maya install folder
     set(MAYA_PLUGIN_EXTENSION ".mll") #plugin extension
     set(OPENMAYA OpenMaya.lib)
     #Compiler

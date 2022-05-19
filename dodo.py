@@ -13,6 +13,7 @@ import subprocess
 import urllib
 from shutil import rmtree
 from zipfile import ZipFile
+import winreg
 
 # Import third-party modules
 import requests
@@ -51,18 +52,25 @@ def add_short_name(short_name):
 def task_init():
     """Download Maya SDK from official site."""
 
-    # NOTES(timmyliang): install choco
-    choco_install_command = "Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))"
-    # NOTES(timmyliang): install Visual studio env
-    vs_build_command = [choco_install_command] + [
-        "choco install visualstudio2015community --version=14.0.23107.0 --yes",
-        "choco install visualstudio2017buildtools --yes",
-        "choco install visualstudio2019buildtools --yes",
-        "choco install vcredist140 --yes",
-    ]
+    def install_package():
+        # NOTES(timmyliang): install choco
+        choco_install_command = ["PowerShell" ,"-Command","Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))"]
+        subprocess.call(choco_install_command,shell=True)
+
+        # NOTES(timmyliang): install Visual studio env
+        vs_build_command =  [
+            "choco install visualstudio2015community --version=14.0.23107.0 --yes",
+            "choco install visualstudio2017buildtools --yes",
+            "choco install visualstudio2019buildtools --yes",
+            "choco install vcredist140 --yes",
+        ]
+        for command in vs_build_command:
+            subprocess.call(command,shell=True)
+            
+    
     # TODO download sdk
 
-    return {"actions": vs_build_command}
+    return {"actions": [install_package]}
 
 
 class DownloadProgressBar(tqdm):
@@ -191,8 +199,17 @@ def task_compile():
     is_win = system() == "Windows"
 
     def run_cmake(version):
-        SDK_path = os.path.join(DIR, "SDK")
-        devkit_folder = os.path.join(SDK_path, "maya{0}".format(version))
+        path = r'SOFTWARE\Autodesk\Maya\{0}\Setup\InstallPath'.format(version)
+        try:
+            handle = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, path)
+        except FileNotFoundError:
+            print('maya {0} not found'.format(version))
+            return
+
+        # NOTES(timmyliang): add maya install location into env
+        location, _ = winreg.QueryValueEx(handle, 'MAYA_INSTALL_LOCATION')
+        os.environ['MAYA_INSTALL_LOCATION'] = os.path.dirname(os.path.abspath(location)).replace('\\','/')
+        
         rmtree(os.path.join(DIR, "build"), ignore_errors=True)
         compiler = "Visual Studio 16 2019" if is_win else "Unix Makefiles"
         build_command = (
