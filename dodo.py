@@ -8,10 +8,10 @@ import os
 from platform import system
 import re
 import shutil
+import logging
 import signal
 import subprocess
 import urllib
-from shutil import rmtree
 from zipfile import ZipFile
 import winreg
 
@@ -22,8 +22,10 @@ from tqdm import tqdm
 
 # NOTES(timmyliang): for ctrl+C quit
 signal.signal(signal.SIGINT, signal.SIG_DFL)
+logging.basicConfig(level=logging.INFO)
+
 DIR = os.path.dirname(__file__)
-DOIT_CONFIG = {
+DOIT_CONFIG = {  # noqa: WPS407
     # NOTES(timmyliang): list task with definition order.
     "sort": "definition",
     "verbosity": 2,
@@ -54,21 +56,35 @@ def task_init():
 
     def install_package():
         # NOTES(timmyliang): install choco
-        choco_install_command = ["PowerShell" ,"-Command","Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))"]
-        subprocess.call(choco_install_command,shell=True)
+        choco_install_command = [
+            "PowerShell",
+            "-Command",
+            "Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))",
+        ]
+        subprocess.call(choco_install_command, shell=True)
 
         # NOTES(timmyliang): install Visual studio env
-        vs_build_command =  [
+        vs_build_command = [
             "choco install visualstudio2015community --version=14.0.23107.0 --yes",
             "choco install visualstudio2017buildtools --yes",
             "choco install visualstudio2019buildtools --yes",
             "choco install vcredist140 --yes",
+            "choco install cmake --installargs 'ADD_CMAKE_TO_PATH=System' --yes",
         ]
         for command in vs_build_command:
-            subprocess.call(command,shell=True)
-            
-    
-    # TODO download sdk
+            subprocess.call(command, shell=True)
+
+        logging.info("Please add VS C++ module with CMake Modules.")
+        setup_path = os.path.join(
+            os.getenv("ProgramFiles(x86)", ""),
+            "Microsoft Visual Studio",
+            "Installer",
+            "setup.exe",
+        )
+        if os.path.isfile(setup_path):
+            os.startfile(setup_path)
+        else:
+            logging.warning("VS setup.exe not found")
 
     return {"actions": [install_package]}
 
@@ -118,7 +134,7 @@ class MayaSDKDownloader(object):
             response = input(message)  # noqa: WPS421
             if not response or response.lower() in ("n", "no"):
                 return True
-            rmtree(devkit_folder, ignore_errors=True)
+            shutil.rmtree(devkit_folder, ignore_errors=True)
 
     @staticmethod
     def cleanup_devkit(devkit_folder, version):
@@ -128,7 +144,7 @@ class MayaSDKDownloader(object):
         devkit = os.path.join(devkit_folder, folder_path)
         for files in os.listdir(devkit):
             shutil.move(os.path.join(devkit, files), devkit_folder)
-        rmtree(devkit, ignore_errors=True)
+        shutil.rmtree(devkit, ignore_errors=True)
 
     @staticmethod
     def get_latest_devkit_url(pattern, urls):
@@ -144,7 +160,7 @@ class MayaSDKDownloader(object):
             # NOTES(timmyliang): get the latest devkit url
             url = cls.get_latest_devkit_url(pattern, urls)
             if not url:
-                print("version {0} not found".format(version))
+                logging.warning("version {0} not found".format(version))
                 break
             devkit_folder = os.path.join(DIR, "SDK", "maya{0}".format(version))
             if cls.check_devkit_exists(devkit_folder):
@@ -199,18 +215,25 @@ def task_compile():
     is_win = system() == "Windows"
 
     def run_cmake(version):
-        path = r'SOFTWARE\Autodesk\Maya\{0}\Setup\InstallPath'.format(version)
+        path = r"SOFTWARE\Autodesk\Maya\{0}\Setup\InstallPath".format(version)
         try:
             handle = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, path)
         except FileNotFoundError:
-            print('maya {0} not found'.format(version))
+            logging.error("maya {0} not found".format(version))
+            return
+
+        SDK_path = os.path.join(DIR, "SDK", "maya{0}".format(version))
+        if not os.path.isdir(SDK_path):
+            logging.error("maya {0} SDK not found".format(version))
             return
 
         # NOTES(timmyliang): add maya install location into env
-        location, _ = winreg.QueryValueEx(handle, 'MAYA_INSTALL_LOCATION')
-        os.environ['MAYA_INSTALL_LOCATION'] = os.path.dirname(os.path.abspath(location)).replace('\\','/')
-        
-        rmtree(os.path.join(DIR, "build"), ignore_errors=True)
+        location, _ = winreg.QueryValueEx(handle, "MAYA_INSTALL_LOCATION")
+        os.environ["MAYA_INSTALL_LOCATION"] = os.path.dirname(
+            os.path.abspath(location)
+        ).replace("\\", "/")
+
+        shutil.rmtree(os.path.join(DIR, "build"), ignore_errors=True)
         compiler = "Visual Studio 16 2019" if is_win else "Unix Makefiles"
         build_command = (
             'cmake -Wno-dev -G "{compiler}" -DMAYA_VERSION={version} . -B build'.format(
