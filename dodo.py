@@ -162,7 +162,9 @@ class MayaSDKDownloader(object):
             if not url:
                 logging.warning("version {0} not found".format(version))
                 break
-            devkit_folder = os.path.join(DIR, "SDK", "maya{0}".format(version))
+            SDK_folder = os.path.join(DIR, "SDK")
+            os.makedirs(SDK_folder, exist_ok=True)
+            devkit_folder = os.path.join(SDK_folder, "maya{0}".format(version))
             if cls.check_devkit_exists(devkit_folder):
                 continue
 
@@ -241,7 +243,9 @@ def task_compile():
             )
         )
         compile_command = "cmake --build build --config Release"
-        return " ".join([build_command, "&", compile_command])
+        # NOTE windows set to utf-8 codec for chinese
+        codec_command = "chcp 65001"
+        return " & ".join([codec_command, build_command, compile_command])
 
     return {
         "actions": [CmdAction(run_cmake)],
