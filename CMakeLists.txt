@@ -22,13 +22,18 @@ set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 #Finds and loads instructions from an external module
 find_package(Maya REQUIRED) 
 
+#define a list of preprocessor include file search directories
+include_directories(${MAYA_INCLUDE_DIR})
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/thirdparty)
+
 #Creates a list of user projects that will be included in a generated solution (or a makefile)
 #CHACHE STRING lets me point out an individual project that will be the only project generated and compiled by cmake
 #It is useful when we deal with tens of projects ad don't want to wait until cmake compile them all
 #For example,  >> cmake -G "Unix Makefiles" -DMAYA_PROJECT testCommand  -  will generate a makefile that deals with only testCommand project
 set(MAYA_PROJECT
-	testDeformer
-	testCommand
+	# testDeformer
+	# testCommand
+	hot_reload
 	CACHE STRING "Maya Project")
 
 #Here we add subdirectories to the build
