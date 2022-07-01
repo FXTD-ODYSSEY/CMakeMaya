@@ -216,8 +216,17 @@ def task_compile():
 
     is_win = system() == "Windows"
 
-    def run_cmake(version):
+    def run_cmake(version, project):
+        default_projects = ";".join(
+            [
+                folder
+                for folder in os.listdir("projects")
+                if os.path.isdir(os.path.join("projects", folder))
+            ]
+        )
+        project = project if project else default_projects
         path = r"SOFTWARE\Autodesk\Maya\{0}\Setup\InstallPath".format(version)
+
         try:
             handle = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, path)
         except FileNotFoundError:
@@ -237,10 +246,8 @@ def task_compile():
 
         shutil.rmtree(os.path.join(DIR, "build"), ignore_errors=True)
         compiler = "Visual Studio 16 2019" if is_win else "Unix Makefiles"
-        build_command = (
-            'cmake -Wno-dev -G "{compiler}" -DMAYA_VERSION={version} . -B build'.format(
-                compiler=compiler, version=version
-            )
+        build_command = 'cmake -Wno-dev -G "{compiler}" -DMAYA_VERSION={version} -DMAYA_PROJECT={project} . -B build'.format(
+            compiler=compiler, version=version, project=project
         )
         compile_command = "cmake --build build --config Release"
         # NOTE windows set to utf-8 codec for chinese
@@ -257,6 +264,13 @@ def task_compile():
                 "type": str,
                 "default": "2020",
                 "help": "download version",
+            },
+            {
+                "name": "project",
+                "short": "p",
+                "type": str,
+                "default": "",
+                "help": "compile project",
             },
         ],
     }
