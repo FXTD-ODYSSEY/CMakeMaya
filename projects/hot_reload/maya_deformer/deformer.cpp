@@ -1,9 +1,6 @@
 #include "deformer.h"
 #include "deformer_platform.h"
 
-MString kPluginLogicLibraryPath;
-DeformerLogicLibrary kLogicLibrary;
-
 void HotReloadableDeformer::postConstructor()
 {
 	MGlobal::displayInfo("postConstructor kPluginLogicLibraryPath: "+kPluginLogicLibraryPath);

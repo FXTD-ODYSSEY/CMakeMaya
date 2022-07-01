@@ -1,8 +1,9 @@
 #include "plugin_main.h"
 #include "deformer_platform.h"
 
-// MString kPluginLogicLibraryPath;
-// DeformerLogicLibrary kLogicLibrary;
+// NOTE assign memory
+MString kPluginLogicLibraryPath;
+DeformerLogicLibrary kLogicLibrary;
 
 const char *kAUTHOR = "Me, the author";
 const char *kVERSION = "1.0.0";
