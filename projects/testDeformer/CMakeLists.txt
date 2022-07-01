@@ -1,12 +1,6 @@
 #plugin name
 project(testDeformerPlugin) #project name
 
-#Specify invdividual source file
-# set(SOURCE_FILES
-# 	"pluginMain.cpp"
-# 	"testDeformer.cpp"
-# 	"testDeformer.h"
-# )
 
 file(GLOB SOURCE_FILES "*.cpp" "*.h")
 
