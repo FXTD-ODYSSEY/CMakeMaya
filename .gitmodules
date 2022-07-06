@@ -13,3 +13,12 @@
 [submodule "modules/cmt"]
 	path = modules/cmt
 	url = git@github.com:chadmv/cmt.git
+[submodule "modules/maya-dem-bones"]
+	path = modules/maya-dem-bones
+	url = git@github.com:robertjoosten/maya-dem-bones.git
+[submodule "thirdparty/dem-bones"]
+	path = thirdparty/dem-bones
+	url = git@github.com:electronicarts/dem-bones.git
+[submodule "thirdparty/pybind11"]
+	path = thirdparty/pybind11
+	url = git@github.com:pybind/pybind11.git
