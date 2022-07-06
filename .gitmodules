@@ -1,0 +1,15 @@
+[submodule "modules/weightDriver"]
+	path = modules/weightDriver
+	url = git@github.com:IngoClemens/weightDriver.git
+[submodule "modules/rampWeight"]
+	path = modules/rampWeight
+	url = git@github.com:IngoClemens/rampWeights.git
+[submodule "thirdparty/eigen"]
+	path = thirdparty/eigen
+	url = https://gitlab.com/libeigen/eigen.git
+[submodule "modules/cvwrap"]
+	path = modules/cvwrap
+	url = git@github.com:chadmv/cvwrap.git
+[submodule "modules/cmt"]
+	path = modules/cmt
+	url = git@github.com:chadmv/cmt.git
