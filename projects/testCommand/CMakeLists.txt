@@ -1,5 +1,6 @@
 #CMakeLists.txt at ~/projects/testCommand folder
 
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE}/maya${MAYA_VERSION})
 project(testCommandPlugin) #project name
 
 file(GLOB SRCS "*.cpp" "*.h") #get all files at the current folder with defined extensions

@@ -73,7 +73,6 @@ message("[Log] Maya installation location: ${MAYA_LOCATION}")
 set(MAYA_INCLUDE_DIR  ${MAYA_LOCATION}/${MAYA_INCLUDE_DIR_NAME}/)
 message("[Log] Maya include location:  ${MAYA_INCLUDE_DIR}")
 
-
 #Find libs in maya installation folder and return a dirrectory
 # find_path(  MAYA_LIBRARY_DIR    ${OPENMAYA}
 #             PATHS               ${MAYA_LOCATION}
@@ -82,6 +81,14 @@ message("[Log] Maya include location:  ${MAYA_INCLUDE_DIR}")
 # )
 set(MAYA_LIBRARY_DIR  ${MAYA_LOCATION}/${MAYA_LIB_DIR_NAME}/)
 message("[Log] Maya libs location: ${MAYA_LIBRARY_DIR}")
+
+if (${MAYA_VERSION} LESS 2020) 
+    set(MAYA_PYTHON_INCLUDE_DIR ${MAYA_INCLUDE_DIR}/python2.7)
+elseif(${MAYA_VERSION} GREATER 2020) 
+    set(MAYA_PYTHON_INCLUDE_DIR ${MAYA_INCLUDE_DIR}/Python37/Python)
+else() 
+    set(MAYA_PYTHON_INCLUDE_DIR ${MAYA_INCLUDE_DIR}/Python)
+endif()
 
 #Find maya individual libs add clew libs
 foreach(MAYA_LIB OpenMaya OpenMayaAnim OpenMayaFX OpenMayaRender OpenMayaUI Foundation clew)

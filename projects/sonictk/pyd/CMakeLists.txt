@@ -1,12 +1,6 @@
 #plugin name
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE}/maya${MAYA_VERSION}/pyd)
 
-if (${MAYA_VERSION} LESS 2020) 
-set(PYTHON_INCLUDE_DIR ${MAYA_INCLUDE_DIR}/python2.7)
-else() 
-set(PYTHON_INCLUDE_DIR ${MAYA_INCLUDE_DIR}/Python)
-endif()
-
 project(py_hello) #project name
 
 file(GLOB SRCS "pyHello/*.cpp" "pyHello/*.h")
@@ -14,8 +8,7 @@ file(GLOB SRCS "pyHello/*.cpp" "pyHello/*.h")
 #as we've already loaded FindMaya.cmake with find_package() command
 #we now have an access to all variables that we defined in this module
 
-include_directories(${MAYA_INCLUDE_DIR}) #define a list of preprocessor include file search directories
-include_directories(${PYTHON_INCLUDE_DIR})
+include_directories(${MAYA_INCLUDE_DIR} ${MAYA_PYTHON_INCLUDE_DIR}) #define a list of preprocessor include file search directories
 link_directories(${MAYA_LIBRARY_DIR}) #specifies a directory where a linker should search for libraries
 
 add_library(${PROJECT_NAME} SHARED ${SRCS}) #Add a dynamic library to the project using the specified source files
