@@ -83,8 +83,8 @@ message("[Log] Maya include location:  ${MAYA_INCLUDE_DIR}")
 set(MAYA_LIBRARY_DIR  ${MAYA_LOCATION}/${MAYA_LIB_DIR_NAME}/)
 message("[Log] Maya libs location: ${MAYA_LIBRARY_DIR}")
 
-#Find maya individual libs
-foreach(MAYA_LIB OpenMaya OpenMayaAnim OpenMayaFX OpenMayaRender OpenMayaUI Foundation)
+#Find maya individual libs add clew libs
+foreach(MAYA_LIB OpenMaya OpenMayaAnim OpenMayaFX OpenMayaRender OpenMayaUI Foundation clew)
 	find_library(MAYA_${MAYA_LIB}_LIBRARY NAMES ${MAYA_LIB} PATHS ${MAYA_LIBRARY_DIR} NO_DEFAULT_PATH)
 	set(MAYA_LIBRARIES ${MAYA_LIBRARIES} ${MAYA_${MAYA_LIB}_LIBRARY}) #append a lib to MAYA_LIBRARIES list
 endforeach()

@@ -1,4 +1,7 @@
 #plugin name
+
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE}/maya${MAYA_VERSION})
+
 project({{cookiecutter.project_name}})
 
 file(GLOB SRCS "*.cpp" "*.h")

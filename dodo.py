@@ -4,16 +4,17 @@
 from __future__ import absolute_import, division, print_function
 
 # Import built-in modules
+import glob
+import logging
 import os
-from platform import system
 import re
 import shutil
-import logging
 import signal
 import subprocess
 import urllib
-from zipfile import ZipFile
 import winreg
+from platform import system
+from zipfile import ZipFile
 
 # Import third-party modules
 import requests
@@ -212,19 +213,20 @@ def task_new():
 @add_short_name("c")
 def task_compile():
     """Run cmake to compile C++ plugin."""
-    # TODO(timmyliang): if sdk not exists
-
     is_win = system() == "Windows"
 
     def run_cmake(version, project):
-        default_projects = ";".join(
-            [
-                folder
-                for folder in os.listdir("projects")
-                if os.path.isdir(os.path.join("projects", folder))
-            ]
-        )
+
+        project_dict = {}
+        for proj in glob.iglob("projects/**/CMakeLists.txt", recursive=True):
+            project_path = os.path.dirname(os.path.relpath(proj, "projects"))
+            project_dict[os.path.basename(project_path)] = project_path
+
+        default_projects = ";".join(project_dict.values())
+
         project = project if project else default_projects
+        project = project_dict.get(project, project)
+
         path = r"SOFTWARE\Autodesk\Maya\{0}\Setup\InstallPath".format(version)
 
         try:
@@ -252,6 +254,7 @@ def task_compile():
         compile_command = "cmake --build build --config Release"
         # NOTE windows set to utf-8 codec for chinese
         codec_command = "chcp 65001"
+        print(" & ".join([codec_command, build_command, compile_command]))
         return " & ".join([codec_command, build_command, compile_command])
 
     return {
@@ -263,7 +266,7 @@ def task_compile():
                 "short": "v",
                 "type": str,
                 "default": "2020",
-                "help": "download version",
+                "help": "maya version",
             },
             {
                 "name": "project",

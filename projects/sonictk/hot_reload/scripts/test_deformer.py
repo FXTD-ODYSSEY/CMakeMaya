@@ -65,7 +65,7 @@ def setup_maya_scene():
     # NOTE set to compile mll
     maya_version = "maya{0}".format(pm.about(q=1, v=1))
     plugin_path = os.path.join(
-        REPO, "plug-ins", "Release", "hot_reload", maya_version, "hot_reload.mll"
+        REPO, "plug-ins", "Release", maya_version, "hot_reload", "hot_reload.mll", 
     )
     pm.loadPlugin(plugin_path)
 
@@ -79,41 +79,42 @@ def update_deformer():
     from maya import OpenMaya
 
     tempdir = tempfile.gettempdir()
-    json_path = os.path.join(tempdir, "maya_hot_reload","pt_data.json")
-    
+    json_path = os.path.join(tempdir, "maya_hot_reload", "pt_data.json")
+
     for deformer in pm.ls(type="hotReloadableDeformer"):
         pm.dgdirty(deformer)
 
-    sphere = pm.PyNode('pSphere1')
+    sphere = pm.PyNode("pSphere1")
     itr = OpenMaya.MItMeshVertex(sphere.__apimdagpath__())
     pt_data = {}
     while not itr.isDone():
         pt = itr.position(OpenMaya.MSpace.kWorld)
-        pt_data[str(itr.index())] = (pt.x,pt.y,pt.z)
+        pt_data[str(itr.index())] = (pt.x, pt.y, pt.z)
         itr.next()
 
     if os.path.exists(json_path):
-        with open(json_path,'r') as rf:
+        with open(json_path, "r") as rf:
             data = json.load(rf)
-        
+
         is_change = False
-        for index,xyz in pt_data.items():
+        for index, xyz in pt_data.items():
             last_xyz = data[index]
-            current = dt.Vector(xyz[0],xyz[1],xyz[2])
-            last = dt.Vector(last_xyz[0],last_xyz[1],last_xyz[2])
+            current = dt.Vector(xyz[0], xyz[1], xyz[2])
+            last = dt.Vector(last_xyz[0], last_xyz[1], last_xyz[2])
             if (current - last).length() > 0.01:
                 is_change = True
                 break
-        
+
         logger.info("sphere change" if is_change else "sphere not change")
     else:
         logger.info("sphere data not exists.")
-    
+
     folder = os.path.dirname(json_path)
     if not os.path.isdir(folder):
         os.makedirs(folder)
-    with open(json_path,'w') as wf:
-        json.dump(pt_data,wf)
+    with open(json_path, "w") as wf:
+        json.dump(pt_data, wf)
+
 
 def run_maya_server(port):
     setup_maya_scene()

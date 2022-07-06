@@ -1,4 +1,6 @@
 #plugin name
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE}/maya${MAYA_VERSION})
+
 project(sineNode)
 
 file(GLOB SRCS "*.cpp" "*.h")

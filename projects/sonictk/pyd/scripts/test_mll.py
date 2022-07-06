@@ -33,8 +33,8 @@ sys.path.insert(0, MODULE) if MODULE not in sys.path else None
 if __name__ == "__main__":
     maya.standalone.initialize()
     import maya.cmds as cmds
-    
-    target_dir = os.path.join(MODULE,"pyd","maya{0}".format(cmds.about(q=1,v=1)))
+
+    target_dir = os.path.join(MODULE, "maya{0}".format(cmds.about(q=1, v=1)), "pyd")
     plugin_path = os.path.join(target_dir, "pyMayaPlugins.mll")
     cmds.loadPlugin(plugin_path)
 

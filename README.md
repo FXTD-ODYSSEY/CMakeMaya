@@ -21,7 +21,6 @@ after choco install finish, it will open the `setup.exe` program.
 ## Usage
 
 
-
 ### doit list
 
 run `doit list` would list all available command.
@@ -33,5 +32,6 @@ run `doit new` to create a template project for C++ into the projects folder.
 
 ### doit compile
 
-run `doit compile` to compile the C++ plugin.
+run `doit compile` or `doit c` to compile the C++ plugin.
+`doit help c` to get command help
 

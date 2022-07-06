@@ -34,9 +34,10 @@ if __name__ == "__main__":
     from maya import cmds
 
     MODULE = os.path.join(repo, "plug-ins", "Release")
-    target_dir = os.path.join(MODULE,"pyd","maya{0}".format(cmds.about(q=1,v=1)))
+    target_dir = os.path.join(MODULE, "maya{0}".format(cmds.about(q=1, v=1)), "pyd")
     sys.path.insert(0, target_dir) if target_dir not in sys.path else None
     import py_hello
+
     py_hello.hello_world_maya("my string")
 
     maya.standalone.uninitialize()
