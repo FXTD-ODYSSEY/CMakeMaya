@@ -3,15 +3,24 @@
 source repo from https://github.com/volodinroman/CMakeMaya
 I add pydoit to make all the process easier.
 
-## requirement
+## Requirement
 
 Install [Python](https://www.python.org/) 
 run `pip install poetry`
 
-## Usage:
+## Prerequisites
 
 run `poetry install` to install the packages.
 then run `poetry run doit` to init the build process.
+
+Be aware that, VS Build Toolkit need to install cmake manually.
+after choco install finish, it will open the `setup.exe` program.
+
+---
+
+## Usage
+
+
 
 ### doit list
 
