@@ -16,6 +16,7 @@ add_library(${PROJECT_NAME} SHARED ${SRCS}) #Add a dynamic library to the projec
 target_link_libraries(${PROJECT_NAME} ${MAYA_LIBRARIES}) #specifies list of libraries to use when linking the terget and its dependents
 
 # output suffix as pyd format
+# TODO support python3
 set_target_properties(${PROJECT_NAME} PROPERTIES
     LINK_FLAGS "/export:initpy_hello"
     SUFFIX ".pyd"
