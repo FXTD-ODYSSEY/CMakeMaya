@@ -33,6 +33,25 @@ inline int stringReplace(const char *input,
 	return replaced;
 }
 
+int convertPathSeparatorsToOSNative(char *filename)
+{
+	sizet len = strlen(filename);
+	char *tmp = new char[len + 1];
+	int replaced = stringReplace(filename,
+								 tmp,
+								 kWin32PathSeparator,
+								 kPathDelimiter,
+								 (unsigned int)len + 1);
+	if (replaced <= 0)
+	{
+		return replaced;
+	}
+
+	strncpy(filename, tmp, len + 1);
+
+	return replaced;
+}
+
 inline void OSPrintLastError()
 {
 	char errMsg[256];
@@ -91,25 +110,6 @@ inline FuncPtr loadSymbolFromLibrary(DLLHandle handle, const char *symbol)
 	}
 
 	return symbolAddr;
-}
-
-int convertPathSeparatorsToOSNative(char *filename)
-{
-	sizet len = strlen(filename);
-	char *tmp = new char[len + 1];
-	int replaced = stringReplace(filename,
-								 tmp,
-								 kWin32PathSeparator,
-								 kPathDelimiter,
-								 (unsigned int)len + 1);
-	if (replaced <= 0)
-	{
-		return replaced;
-	}
-
-	strncpy(filename, tmp, len + 1);
-
-	return replaced;
 }
 
 FileTime getLastWriteTime(const char *filename)

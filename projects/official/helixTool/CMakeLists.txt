@@ -1,0 +1,17 @@
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE}/maya${MAYA_VERSION})
+get_filename_component(CUREENT_FOLDER ${CMAKE_CURRENT_SOURCE_DIR} NAME)
+
+project(${CUREENT_FOLDER})
+
+file(GLOB SRCS "*.cpp" "*.h")
+
+find_package(OpenGL REQUIRED) 
+
+include_directories(${MAYA_INCLUDE_DIR}) 
+link_directories(${MAYA_LIBRARY_DIR}) 
+message("OPENGL_LIBRARIES: ${OPENGL_LIBRARIES}")
+add_library(${PROJECT_NAME} SHARED ${SRCS}) 
+target_link_libraries(${PROJECT_NAME} ${MAYA_LIBRARIES}) 
+target_link_libraries(${PROJECT_NAME} ${OPENGL_LIBRARIES}) 
+
+MAYA_PLUGIN(${PROJECT_NAME})
