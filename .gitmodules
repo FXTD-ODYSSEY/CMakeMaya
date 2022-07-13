@@ -22,3 +22,9 @@
 [submodule "thirdparty/pybind11"]
 	path = thirdparty/pybind11
 	url = git@github.com:pybind/pybind11.git
+[submodule "thirdparty/llvm-project"]
+	path = thirdparty/llvm-project
+	url = git@github.com:llvm/llvm-project.git
+[submodule "modules/brSmoothWeights"]
+	path = modules/brSmoothWeights
+	url = git@github.com:IngoClemens/brSmoothWeights.git
