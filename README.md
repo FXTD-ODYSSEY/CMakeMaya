@@ -61,9 +61,6 @@ you need to modify the source code for compatibility.
 
 ---
 
-`sonictk/pyd` not support python3 yet.
-
----
 
 `robertjoosten/maya-dem-bones` require `pybind11`.
 however, `pyblind11` drop support for python2 in the new version.
