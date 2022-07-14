@@ -37,9 +37,12 @@ static PyMethodDef mayaPythonCExtMethods[] = {
 #if PY_MAJOR_VERSION == 2
 extern "C" PyMODINIT_FUNC initpy_hello()
 {
-	return Py_InitModule3("py_hello",
-						  mayaPythonCExtMethods,
-						  MAYA_PYTHON_C_EXT_DOCSTRING);
+	PyObject *module = Py_InitModule3("py_hello",
+									  mayaPythonCExtMethods,
+									  MAYA_PYTHON_C_EXT_DOCSTRING);
+	if (module == NULL) {
+		return;
+	}
 }
 #elif PY_MAJOR_VERSION == 3
 extern "C" PyMODINIT_FUNC PyInit_py_hello()
