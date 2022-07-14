@@ -11,14 +11,18 @@ file(GLOB SRCS "pyHello/*.cpp" "pyHello/*.h")
 include_directories(${MAYA_INCLUDE_DIR} ${MAYA_PYTHON_INCLUDE_DIR}) #define a list of preprocessor include file search directories
 link_directories(${MAYA_LIBRARY_DIR}) #specifies a directory where a linker should search for libraries
 
+set(EXPORT_FLAGS "/export:initpy_hello")
+if (${MAYA_VERSION} GREATER 2020)
+    set(EXPORT_FLAGS "/export:PyInit_py_hello")
+endif()
+
 add_library(${PROJECT_NAME} SHARED ${SRCS}) #Add a dynamic library to the project using the specified source files
 
 target_link_libraries(${PROJECT_NAME} ${MAYA_LIBRARIES}) #specifies list of libraries to use when linking the terget and its dependents
 
 # output suffix as pyd format
-# TODO support python3
 set_target_properties(${PROJECT_NAME} PROPERTIES
-    LINK_FLAGS "/export:initpy_hello"
+    LINK_FLAGS ${EXPORT_FLAGS}
     SUFFIX ".pyd"
 )
 
