@@ -28,3 +28,6 @@
 [submodule "modules/brSmoothWeights"]
 	path = modules/brSmoothWeights
 	url = git@github.com:IngoClemens/brSmoothWeights.git
+[submodule "modules/Maya-PerformanceTest"]
+	path = modules/Maya-PerformanceTest
+	url = https://github.com/FXTD-ODYSSEY/Maya-PerfomanceTest
