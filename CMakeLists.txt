@@ -24,7 +24,6 @@ set(REPO_ROOT ${CMAKE_CURRENT_SOURCE_DIR})
 find_package(Maya REQUIRED) 
 find_package(Eigen REQUIRED) 
 find_package(DemBones REQUIRED) 
-find_package(Pybind11 REQUIRED) 
 
 #Creates a list of user projects that will be included in a generated solution (or a makefile)
 #CHACHE STRING lets me point out an individual project that will be the only project generated and compiled by cmake

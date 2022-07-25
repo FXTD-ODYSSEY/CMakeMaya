@@ -5,6 +5,8 @@ set(SOURCE ${REPO_ROOT}/modules/${CUREENT_FOLDER}/src)
 
 project(_dem_bones)
 
+find_package(Pybind11 REQUIRED) 
+
 # locate source code folder
 file(GLOB SRCS "${SOURCE}/*.cpp" "${SOURCE}/*.h")
 

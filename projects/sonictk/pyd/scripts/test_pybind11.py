@@ -33,12 +33,14 @@ if __name__ == "__main__":
     maya.standalone.initialize()
     from maya import cmds
 
+    
+    
     MODULE = os.path.join(repo, "plug-ins", "Release")
     target_dir = os.path.join(MODULE, "maya{0}".format(cmds.about(q=1, v=1)), "pyd")
     sys.path.insert(0, target_dir) if target_dir not in sys.path else None
-    import py_hello
-
-    py_hello.hello_world_maya("my string")
+    import pybind11cpp
+    pybind11cpp.display_info()
+    pybind11cpp.display_info("my information")
 
     maya.standalone.uninitialize()
 

@@ -17,5 +17,7 @@ extern "C" PyMODINIT_FUNC PyInit_py_deformer()
 	MFnPlugin fnPlugin(obj, "Any", "1.0", "Any");
 	fnPlugin.registerNode("myDeformer", MyDeformer::id, MyDeformer::creator, MyDeformer::initialize, MPxNode::kDeformerNode);
 	MGlobal::displayInfo("register myDeformer node");
+#if PY_MAJOR_VERSION == 3
 	return NULL;
+#endif
 }
