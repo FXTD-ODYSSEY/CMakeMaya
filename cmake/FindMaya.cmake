@@ -70,7 +70,7 @@ message("[Log] Maya installation location: ${MAYA_LOCATION}")
 # 			PATH_SUFFIXES 		"${MAYA_INCLUDE_DIR_NAME}/"
 # 			DOC					"Maya Include Path"
 # )
-set(MAYA_INCLUDE_DIR  ${MAYA_SDK_LOCATION}/${MAYA_INCLUDE_DIR_NAME}/)
+set(MAYA_INCLUDE_DIR  ${MAYA_LOCATION}/${MAYA_INCLUDE_DIR_NAME}/)
 message("[Log] Maya include location:  ${MAYA_INCLUDE_DIR}")
 
 #Find libs in maya installation folder and return a dirrectory
@@ -79,7 +79,7 @@ message("[Log] Maya include location:  ${MAYA_INCLUDE_DIR}")
 #             PATH_SUFFIXES       "${MAYA_LIB_DIR_NAME}/"
 #             DOC                 "Maya Library Path"
 # )
-set(MAYA_LIBRARY_DIR  ${MAYA_SDK_LOCATION}/${MAYA_LIB_DIR_NAME}/)
+set(MAYA_LIBRARY_DIR  ${MAYA_LOCATION}/${MAYA_LIB_DIR_NAME}/)
 message("[Log] Maya libs location: ${MAYA_LIBRARY_DIR}")
 
 if (${MAYA_VERSION} LESS 2020) 
