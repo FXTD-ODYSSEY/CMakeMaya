@@ -31,3 +31,6 @@
 [submodule "modules/Maya-PerformanceTest"]
 	path = modules/Maya-PerformanceTest
 	url = https://github.com/FXTD-ODYSSEY/Maya-PerfomanceTest
+[submodule "modules/Maya-CurveBrush"]
+	path = modules/Maya-CurveBrush
+	url = git@github.com:FXTD-ODYSSEY/Maya-CurveBrush.git
