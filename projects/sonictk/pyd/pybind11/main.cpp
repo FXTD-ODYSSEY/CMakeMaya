@@ -1,4 +1,3 @@
-#include <Python.h>
 #include <maya/MGlobal.h>
 #include <stdio.h>
 #include <pybind11/pybind11.h>
