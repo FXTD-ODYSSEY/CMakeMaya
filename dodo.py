@@ -215,8 +215,7 @@ def task_compile():
     """Run cmake to compile C++ plugin."""
     is_win = system() == "Windows"
 
-    def run_cmake(version, project):
-
+    def run_cmake(version, project,skip_build):
         project_dict = {}
         for proj in glob.iglob("projects/**/CMakeLists.txt", recursive=True):
             project_path = os.path.dirname(os.path.relpath(proj, "projects"))
@@ -246,7 +245,6 @@ def task_compile():
             os.path.abspath(location)
         ).replace("\\", "/")
 
-        shutil.rmtree(os.path.join(DIR, "build"), ignore_errors=True)
         compiler = "Visual Studio 16 2019" if is_win else "Unix Makefiles"
         build_command = 'cmake -Wno-dev -G "{compiler}" -DMAYA_VERSION={version} -DMAYA_PROJECT={project} . -B build'.format(
             compiler=compiler, version=version, project=project
@@ -254,11 +252,18 @@ def task_compile():
         compile_command = "cmake --build build --config Release"
         # NOTE windows set to utf-8 codec for chinese
         codec_command = "chcp 65001"
-        print(" & ".join([codec_command, build_command, compile_command]))
-        return " & ".join([codec_command, build_command, compile_command])
+        commands = [codec_command, build_command, compile_command]
+        if skip_build:
+            commands.remove(build_command)
+        else:
+            shutil.rmtree(os.path.join(DIR, "build"), ignore_errors=True)
+            
+        print(" & ".join(commands))
+        subprocess.call(" & ".join(commands),shell=True)
+        # return " & ".join(commands)
 
     return {
-        "actions": [CmdAction(run_cmake)],
+        "actions": [run_cmake],
         "verbosity": 2,
         "params": [
             {
@@ -274,6 +279,14 @@ def task_compile():
                 "type": str,
                 "default": "",
                 "help": "compile project",
+            },
+            {
+                "name": "skip_build",
+                "long": "skip_build",
+                "short": "sb",
+                "type": bool,
+                "default": False,
+                "help": "skip build project",
             },
         ],
     }
