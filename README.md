@@ -14,6 +14,16 @@ Install [Python3](https://www.python.org/) and [poetry](https://python-poetry.or
 5. run `poetry shell` get into the python virtual environment
 6. run `doit init` initialize the build environment
 
+### Install poetry
+If you run to this error, you will need to :
+1. add `C:\Python310\Scripts` to the Environment Path
+2. use administrator rights to open VSCode
+```
+ERROR: Could not install packes due to an OSError: [Error 13] Permission denied: 'C:\\Python310\\Scropts\\dul-receive-pack' 
+Consider using the `--user` option or check the permissions
+```
+
+
 ### Prepare C++ compile environment
 
 `doit init` will install chocolatey then use `choco` to install `VS Build Toolkit` & `CMake`
