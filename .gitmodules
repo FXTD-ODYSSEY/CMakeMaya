@@ -34,3 +34,9 @@
 [submodule "modules/Maya-CurveBrush"]
 	path = modules/Maya-CurveBrush
 	url = git@github.com:FXTD-ODYSSEY/Maya-CurveBrush.git
+[submodule "thirdparty/embree"]
+	path = thirdparty/embree
+	url = git@github.com:embree/embree.git
+[submodule "modules/softIKSolver"]
+	path = modules/softIKSolver
+	url = git@github.com:Toolchefs/softIkSolver.git
